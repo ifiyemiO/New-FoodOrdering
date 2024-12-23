@@ -1,4 +1,8 @@
 package com.foodorder.repositories;
 
-public class OrderRepository {
+import com.foodorder.models.Orders;
+import org.springframework.data.repository.CrudRepository;
+
+public interface OrderRepository extends CrudRepository<Orders, Long> {
+
 }

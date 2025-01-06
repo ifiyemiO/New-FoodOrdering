@@ -19,14 +19,25 @@ public class OrderController {
     // Create a new order
     @PostMapping(path = "/add")
     public @ResponseBody Orders addNewOrder(@RequestBody Orders order) {
+        if (order.getTotalAmount() == null) {
+            order.setTotalAmount(0.0); // Set default value if not provided
+        }
         return orderRepository.save(order);
     }
+
+
+
+
 
     // Read all orders
     @GetMapping(path = "/all")
     public @ResponseBody Iterable<Orders> getAllOrders() {
         return orderRepository.findAll();
     }
+
+
+
+
 
     // Read a specific order by ID
     @GetMapping(path = "/{id}")
@@ -41,10 +52,14 @@ public class OrderController {
         return orderRepository.findById(id).map(order -> {
             order.setCustomerName(newOrder.getCustomerName());
             order.setOrderDate(newOrder.getOrderDate());
-            order.setTotalAmount(newOrder.getTotalAmount());
+            order.setTotalAmount(newOrder.getTotalAmount() != null ? newOrder.getTotalAmount() : 0.0);
             return ResponseEntity.ok(orderRepository.save(order));
         }).orElseGet(() -> ResponseEntity.notFound().build());
     }
+
+
+
+
 
     // Delete an order by ID
     @DeleteMapping(path = "/delete/{id}")

@@ -30,6 +30,8 @@ public class UserController {
         return userRepository.findAll();
     }
 
+
+
     // Read a specific user by ID
     @GetMapping(path = "/{id}")
     public @ResponseBody ResponseEntity<Users> getUserById(@PathVariable Long id) {

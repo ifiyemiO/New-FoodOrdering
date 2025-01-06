@@ -47,7 +47,9 @@ public class MenuItemController {
     public @ResponseBody ResponseEntity<Menu_Items> updateMenuItem(@PathVariable Long id, @RequestBody Menu_Items newMenuItem) {
         return menuItemRepository.findById(id).map(menuItem -> {
             menuItem.setName(newMenuItem.getName());
+            menuItem.setDescription(newMenuItem.getDescription());
             menuItem.setPrice(newMenuItem.getPrice());
+            menuItem.setCategory(newMenuItem.getCategory());
             return ResponseEntity.ok(menuItemRepository.save(menuItem));
         }).orElseGet(() -> ResponseEntity.notFound().build());
     }

@@ -11,6 +11,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping(path = "/orders")
+
 public class OrderController {
 
     @Autowired
@@ -18,26 +19,37 @@ public class OrderController {
 
     // Create a new order
     @PostMapping(path = "/add")
-    public @ResponseBody Orders addNewOrder(@RequestBody Orders order) {
-        if (order.getTotalAmount() == null) {
-            order.setTotalAmount(0.0); // Set default value if not provided
+    public @ResponseBody ResponseEntity<?> addNewOrder(@RequestBody Orders order) {
+        // Validate required fields
+        if (order.getCustomerName() == null || order.getCustomerName().isEmpty()) {
+            return ResponseEntity.badRequest().body("Customer name is required.");
         }
-        return orderRepository.save(order);
+        if (order.getRestaurantName() == null || order.getRestaurantName().isEmpty()) {
+            return ResponseEntity.badRequest().body("Restaurant name is required.");
+        }
+        if (order.getRestaurantLocation() == null || order.getRestaurantLocation().isEmpty()) {
+            return ResponseEntity.badRequest().body("Restaurant location is required.");
+        }
+
+        // Set default value for totalAmount if not provided
+        if (order.getTotalAmount() == null) {
+            order.setTotalAmount(0.0);
+        }
+
+        try {
+            Orders savedOrder = orderRepository.save(order);
+            return ResponseEntity.ok(savedOrder);
+        } catch (Exception e) {
+            // Log the error and return an appropriate response
+            return ResponseEntity.status(500).body("An error occurred while saving the order: " + e.getMessage());
+        }
     }
-
-
-
-
 
     // Read all orders
     @GetMapping(path = "/all")
     public @ResponseBody Iterable<Orders> getAllOrders() {
         return orderRepository.findAll();
     }
-
-
-
-
 
     // Read a specific order by ID
     @GetMapping(path = "/{id}")
@@ -56,10 +68,6 @@ public class OrderController {
             return ResponseEntity.ok(orderRepository.save(order));
         }).orElseGet(() -> ResponseEntity.notFound().build());
     }
-
-
-
-
 
     // Delete an order by ID
     @DeleteMapping(path = "/delete/{id}")

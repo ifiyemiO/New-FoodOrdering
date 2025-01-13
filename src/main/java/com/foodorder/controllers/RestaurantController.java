@@ -28,8 +28,6 @@ public class RestaurantController {
         return restaurantRepository.findAll();
     }
 
-
-
     // Read a specific restaurant by ID
     @GetMapping(path = "/{id}")
     public @ResponseBody ResponseEntity<Restaurants> getRestaurantById(@PathVariable Long id) {

@@ -17,6 +17,8 @@ public class Orders {
     private String customerName;
     private LocalDate orderDate;
     private Double totalAmount;
+    private String restaurantName;
+    private String restaurantLocation;
 
     // Getters and Setters
     public long getId() {
@@ -51,5 +53,19 @@ public class Orders {
         this.totalAmount = totalAmount;
     }
 
+    public String getRestaurantName() {
+        return restaurantName;
+    }
 
+    public void setRestaurantName(String restaurantName) {
+        this.restaurantName = restaurantName;
+    }
+
+    public String getRestaurantLocation() {
+        return restaurantLocation;
+    }
+
+    public void setRestaurantLocation(String restaurantLocation) {
+        this.restaurantLocation = restaurantLocation;
+    }
 }
